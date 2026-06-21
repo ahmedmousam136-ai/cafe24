@@ -594,57 +594,120 @@
   /* ===== ADMIN LOGIN MODAL ===== */
   #adminModal {
     display: none; position: fixed; inset: 0; z-index: 9999;
-    background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+    background: rgba(0,0,0,0.88); backdrop-filter: blur(14px);
     align-items: center; justify-content: center;
   }
   #adminModal.open { display: flex; }
   .admin-modal-box {
-    background: var(--surface); border: 1px solid rgba(201,168,76,0.25);
-    border-radius: var(--radius); padding: 48px 40px; width: 100%; max-width: 420px;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.6); margin: 20px;
-    animation: fadeInUp 0.35s ease;
+    background: var(--surface); border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 20px; padding: 48px 40px 40px; width: 100%; max-width: 400px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,168,76,0.08);
+    margin: 20px; position: relative;
+    animation: adminModalIn 0.38s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes adminModalIn {
+    from { opacity:0; transform: scale(0.88) translateY(24px); }
+    to   { opacity:1; transform: scale(1)    translateY(0); }
+  }
+  .admin-modal-icon {
+    width: 64px; height: 64px; border-radius: 18px; margin: 0 auto 20px;
+    background: linear-gradient(135deg, rgba(201,168,76,0.18), rgba(201,168,76,0.06));
+    border: 1px solid rgba(201,168,76,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
   }
   .admin-modal-logo {
-    font-family: var(--font-display); font-size: 1.4rem; font-weight: 700;
-    color: var(--gold); text-align: center; margin-bottom: 6px;
+    font-family: var(--font-display); font-size: 1.35rem; font-weight: 700;
+    color: var(--gold); text-align: center; margin-bottom: 5px;
   }
   .admin-modal-sub {
-    text-align: center; font-size: 0.78rem; color: var(--text-muted);
-    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 36px;
+    text-align: center; font-size: 0.75rem; color: var(--text-muted);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 32px;
   }
-  .admin-field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
-  .admin-field label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+  .admin-field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+  .admin-field label { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+  .admin-field-wrap { position: relative; }
+  .admin-field-wrap i {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); font-size: 0.85rem; pointer-events: none;
+  }
   .admin-field input {
-    background: var(--dark-3); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: var(--radius-sm); padding: 12px 16px;
+    width: 100%;
+    background: var(--dark-3); border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 13px 16px 13px 40px;
     color: var(--text); font-family: var(--font-body); font-size: 0.9rem;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .admin-field input:focus { outline: none; border-color: var(--gold); }
+  .admin-field input:focus {
+    outline: none; border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+  }
+  .admin-field input.shake {
+    animation: inputShake 0.38s ease;
+    border-color: var(--red) !important;
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.12) !important;
+  }
+  @keyframes inputShake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+  }
   .admin-login-btn {
-    width: 100%; background: var(--gold); color: var(--dark);
-    padding: 14px; border-radius: 50px; font-size: 0.9rem; font-weight: 700;
-    letter-spacing: 0.04em; margin-top: 8px; transition: all 0.2s;
+    width: 100%; background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    color: var(--dark); padding: 14px; border-radius: 50px;
+    font-size: 0.9rem; font-weight: 700; letter-spacing: 0.04em;
+    margin-top: 12px; transition: all 0.22s;
+    box-shadow: 0 4px 18px rgba(201,168,76,0.35);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .admin-login-btn:hover { background: var(--gold-light); }
+  .admin-login-btn:hover { background: linear-gradient(135deg, var(--gold), var(--gold-light)); box-shadow: 0 6px 24px rgba(201,168,76,0.5); transform: translateY(-1px); }
+  .admin-login-btn:active { transform: translateY(0); }
   .admin-modal-close {
-    position: absolute; top: 16px; right: 20px;
-    background: none; color: var(--text-muted); font-size: 1.2rem;
+    position: absolute; top: 16px; right: 16px;
+    background: rgba(255,255,255,0.06); color: var(--text-muted);
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; transition: all 0.2s;
   }
-  .admin-modal-close:hover { color: var(--text); }
-  .admin-error { color: var(--red); font-size: 0.78rem; text-align: center; margin-top: 10px; display: none; }
+  .admin-modal-close:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+  .admin-error {
+    color: var(--red); font-size: 0.78rem; text-align: center;
+    margin-top: 12px; display: none;
+    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 8px; padding: 8px 12px;
+    animation: fadeInUp 0.2s ease;
+  }
+  .admin-hint {
+    text-align: center; font-size: 0.7rem; color: rgba(154,154,138,0.55);
+    margin-top: 18px; letter-spacing: 0.03em;
+  }
   /* Admin bar shown when logged in */
   #adminBar {
     display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 1100;
-    background: var(--gold); color: var(--dark);
-    padding: 9px 5%; font-size: 0.8rem; font-weight: 600;
+    background: linear-gradient(90deg, #9A7A30, #C9A84C, #9A7A30);
+    color: var(--dark); padding: 10px 5%; font-size: 0.8rem; font-weight: 600;
     align-items: center; justify-content: space-between; gap: 12px;
   }
   #adminBar.visible { display: flex; }
+  #adminBar .admin-bar-left { display: flex; align-items: center; gap: 10px; }
   #adminBar a { color: var(--dark); font-weight: 700; text-decoration: underline; }
-  .admin-bar-logout { background: var(--dark); color: var(--gold); border: none; padding: 5px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+  .admin-bar-logout {
+    background: var(--dark); color: var(--gold); border: none;
+    padding: 6px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+  }
+  .admin-bar-logout:hover { background: #111; }
   /* Push nav down when admin bar visible */
-  body.admin-mode nav { top: 38px; }
+  body.admin-mode nav { top: 40px; }
+  /* Admin dashboard reveal animation */
+  #adminDashboard { transition: opacity 0.4s ease; }
+  #adminDashboard.revealing { opacity: 0; }
+  #adminDashboard.revealed { opacity: 1; }
+  @media (max-width: 480px) {
+    .admin-modal-box { padding: 36px 24px 32px; }
+  }
 
 </style>
 </head>
@@ -1388,7 +1451,7 @@
 
   // ===== ADMIN LOGIN =====
   const ADMIN_USER = 'admin';
-  const ADMIN_PASS = 'cafe24ctg';
+  const ADMIN_PASS = 'admin';
 
   function showAdminLogin() {
     document.getElementById('adminModal').classList.add('open');
@@ -1401,12 +1464,22 @@
   function doAdminLogin() {
     const u = document.getElementById('adminUser').value.trim();
     const p = document.getElementById('adminPass').value;
+    const errEl = document.getElementById('adminError');
+    const uInput = document.getElementById('adminUser');
+    const pInput = document.getElementById('adminPass');
     if (u === ADMIN_USER && p === ADMIN_PASS) {
+      errEl.style.display = 'none';
       closeAdminLogin();
-      document.getElementById('adminDashboard').style.display = 'block';
+      // Smooth reveal dashboard
+      const dash = document.getElementById('adminDashboard');
+      dash.style.display = 'block';
+      dash.classList.add('revealing');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { dash.classList.remove('revealing'); dash.classList.add('revealed'); });
+      });
       document.getElementById('adminBar').classList.add('visible');
       document.body.classList.add('admin-mode');
-      // Trigger counters now that dashboard is visible
+      // Trigger counters
       document.querySelectorAll('#adminDashboard .counter').forEach(animateCounter);
       // Build visit dots
       const dotsEl2 = document.getElementById('visitDots');
@@ -1418,9 +1491,20 @@
           dotsEl2.appendChild(d);
         }
       }
-      setTimeout(scrollToDash, 150);
+      // Set live date inside dashboard
+      if(document.getElementById('dashDate')) document.getElementById('dashDate').textContent = new Date().toLocaleDateString('en-BD', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+      setTimeout(scrollToDash, 200);
     } else {
-      document.getElementById('adminError').style.display = 'block';
+      // Shake inputs and show error
+      errEl.style.display = 'block';
+      [uInput, pInput].forEach(el => {
+        el.classList.remove('shake');
+        void el.offsetWidth; // reflow
+        el.classList.add('shake');
+        el.addEventListener('animationend', () => el.classList.remove('shake'), { once: true });
+      });
+      pInput.value = '';
+      pInput.focus();
     }
   }
   function doAdminLogout() {
@@ -1441,27 +1525,40 @@
 
 <!-- ===== ADMIN LOGIN MODAL ===== -->
 <div id="adminModal">
-  <div class="admin-modal-box" style="position:relative;">
-    <button class="admin-modal-close" onclick="closeAdminLogin()"><i class="fas fa-times"></i></button>
+  <div class="admin-modal-box">
+    <button class="admin-modal-close" onclick="closeAdminLogin()" aria-label="Close"><i class="fas fa-times"></i></button>
+    <div class="admin-modal-icon">🔐</div>
     <div class="admin-modal-logo">Cafe24 CTG</div>
     <div class="admin-modal-sub">Admin Dashboard Access</div>
     <div class="admin-field">
       <label>Username</label>
-      <input type="text" id="adminUser" placeholder="Enter admin username" autocomplete="off">
+      <div class="admin-field-wrap">
+        <i class="fas fa-user"></i>
+        <input type="text" id="adminUser" placeholder="Enter username" autocomplete="off">
+      </div>
     </div>
     <div class="admin-field">
       <label>Password</label>
-      <input type="password" id="adminPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doAdminLogin()">
+      <div class="admin-field-wrap">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="adminPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doAdminLogin()">
+      </div>
     </div>
-    <button class="admin-login-btn" onclick="doAdminLogin()"><i class="fas fa-lock"></i> &nbsp;Access Dashboard</button>
-    <div class="admin-error" id="adminError">Incorrect credentials. Please try again.</div>
+    <button class="admin-login-btn" onclick="doAdminLogin()">
+      <i class="fas fa-sign-in-alt"></i> Login to Dashboard
+    </button>
+    <div class="admin-error" id="adminError">Invalid credentials</div>
+    <div class="admin-hint">Demo credentials: admin / admin</div>
   </div>
 </div>
 
 <!-- Admin Top Bar -->
 <div id="adminBar">
-  <span>🔐 Admin Mode Active — <a href="#adminDashboard" onclick="scrollToDash()">View Dashboard</a></span>
-  <button class="admin-bar-logout" onclick="doAdminLogout()">Logout</button>
+  <div class="admin-bar-left">
+    <span>🔐</span>
+    <span>Admin Mode — <a href="#adminDashboard" onclick="scrollToDash()">View Dashboard</a></span>
+  </div>
+  <button class="admin-bar-logout" onclick="doAdminLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
 </div>
 
 </body>
