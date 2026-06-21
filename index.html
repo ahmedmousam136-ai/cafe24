@@ -590,6 +590,62 @@
   .engagement-val { font-size: 0.82rem; font-weight: 600; color: var(--text); }
   .engagement-bar-wrap { flex: 2; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
   .engagement-bar-fill { height: 100%; border-radius: 3px; }
+
+  /* ===== ADMIN LOGIN MODAL ===== */
+  #adminModal {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+    align-items: center; justify-content: center;
+  }
+  #adminModal.open { display: flex; }
+  .admin-modal-box {
+    background: var(--surface); border: 1px solid rgba(201,168,76,0.25);
+    border-radius: var(--radius); padding: 48px 40px; width: 100%; max-width: 420px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6); margin: 20px;
+    animation: fadeInUp 0.35s ease;
+  }
+  .admin-modal-logo {
+    font-family: var(--font-display); font-size: 1.4rem; font-weight: 700;
+    color: var(--gold); text-align: center; margin-bottom: 6px;
+  }
+  .admin-modal-sub {
+    text-align: center; font-size: 0.78rem; color: var(--text-muted);
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 36px;
+  }
+  .admin-field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
+  .admin-field label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+  .admin-field input {
+    background: var(--dark-3); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-sm); padding: 12px 16px;
+    color: var(--text); font-family: var(--font-body); font-size: 0.9rem;
+    transition: border-color 0.2s;
+  }
+  .admin-field input:focus { outline: none; border-color: var(--gold); }
+  .admin-login-btn {
+    width: 100%; background: var(--gold); color: var(--dark);
+    padding: 14px; border-radius: 50px; font-size: 0.9rem; font-weight: 700;
+    letter-spacing: 0.04em; margin-top: 8px; transition: all 0.2s;
+  }
+  .admin-login-btn:hover { background: var(--gold-light); }
+  .admin-modal-close {
+    position: absolute; top: 16px; right: 20px;
+    background: none; color: var(--text-muted); font-size: 1.2rem;
+  }
+  .admin-modal-close:hover { color: var(--text); }
+  .admin-error { color: var(--red); font-size: 0.78rem; text-align: center; margin-top: 10px; display: none; }
+  /* Admin bar shown when logged in */
+  #adminBar {
+    display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 1100;
+    background: var(--gold); color: var(--dark);
+    padding: 9px 5%; font-size: 0.8rem; font-weight: 600;
+    align-items: center; justify-content: space-between; gap: 12px;
+  }
+  #adminBar.visible { display: flex; }
+  #adminBar a { color: var(--dark); font-weight: 700; text-decoration: underline; }
+  .admin-bar-logout { background: var(--dark); color: var(--gold); border: none; padding: 5px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+  /* Push nav down when admin bar visible */
+  body.admin-mode nav { top: 38px; }
+
 </style>
 </head>
 <body>
@@ -601,7 +657,6 @@
     <span>Hall Room & Multipurpose</span>
   </div>
   <ul class="nav-links">
-    <li><a href="#dashboard">Dashboard</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#gallery">Gallery</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -615,7 +670,6 @@
 <!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button>
-  <a href="#dashboard" onclick="closeMobileMenu()">Dashboard</a>
   <a href="#services" onclick="closeMobileMenu()">Services</a>
   <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
   <a href="#contact" onclick="closeMobileMenu()">Contact</a>
@@ -668,8 +722,8 @@
   <div class="scroll-hint"><i class="fas fa-chevron-down"></i> Scroll</div>
 </section>
 
-<div class="divider"></div>
-
+<!-- DASHBOARD HIDDEN FROM PUBLIC - accessible via Admin Login below -->
+<div id="adminDashboard" style="display:none;">
 <!-- ===== DASHBOARD SECTION ===== -->
 <section id="dashboard">
   <div class="dash-header">
@@ -985,6 +1039,8 @@
 
 <div class="divider"></div>
 
+</div>
+
 <!-- ===== SERVICES ===== -->
 <section id="services">
   <span class="section-label">What We Offer</span>
@@ -1142,13 +1198,13 @@
   </div>
   <div class="map-container">
     <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235527.78779406748!2d91.65530374501953!3d22.356651!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30acd8a64c7cf045%3A0x18a4b40df3db7591!2sChittagong%2C%20Bangladesh!5e0!3m2!1sen!2sbd!4v1718000000000!5m2!1sen!2sbd"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3689.6833!2d91.8304!3d22.3675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30acd8a0455f6741%3A0x70a438f2a3c69b10!2sCafe%2024%20Park!5e0!3m2!1sen!2sbd!4v1718100000000!5m2!1sen!2sbd"
       allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
       title="Cafe24 CTG Location Map">
     </iframe>
   </div>
   <div class="map-btn-wrap" style="margin-top:24px;">
-    <a href="https://maps.google.com/?q=Chittagong+Bangladesh" target="_blank" class="btn-primary" style="display:inline-flex;">
+    <a href="https://share.google/3JVFMuqKS7NSs8e1q" target="_blank" class="btn-primary" style="display:inline-flex;">
       <i class="fas fa-directions"></i> Get Directions
     </a>
   </div>
@@ -1170,7 +1226,7 @@
     <div>
       <div class="footer-col-title">Quick Links</div>
       <ul class="footer-links">
-        <li><a href="#dashboard">Analytics</a></li>
+        <li><a href="#" onclick="showAdminLogin(); return false;">Admin Login</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#gallery">Gallery</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -1229,7 +1285,7 @@
 
   // ===== DATE =====
   const now = new Date();
-  document.getElementById('dashDate').textContent = now.toLocaleDateString('en-BD', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  if(document.getElementById('dashDate')) document.getElementById('dashDate').textContent = now.toLocaleDateString('en-BD', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
   // ===== ANIMATED COUNTERS =====
   function animateCounter(el) {
@@ -1255,8 +1311,7 @@
       }
     });
   }, { threshold: 0.2 });
-  const dashEl = document.getElementById('dashboard');
-  if (dashEl) observer.observe(dashEl);
+  // Dashboard counters triggered on admin login instead
 
   // ===== VISIT DOTS =====
   const dotsEl = document.getElementById('visitDots');
@@ -1323,7 +1378,6 @@
 
   // ===== LIVE DATA SIMULATION (Demo) =====
   setInterval(() => {
-    // Randomly pulse a stat card to show "live" feel
     const cards = document.querySelectorAll('.stat-card');
     const random = cards[Math.floor(Math.random() * cards.length)];
     if (random) {
@@ -1331,6 +1385,84 @@
       setTimeout(() => { random.style.borderColor = 'rgba(255,255,255,0.06)'; }, 800);
     }
   }, 3000);
+
+  // ===== ADMIN LOGIN =====
+  const ADMIN_USER = 'admin';
+  const ADMIN_PASS = 'cafe24ctg';
+
+  function showAdminLogin() {
+    document.getElementById('adminModal').classList.add('open');
+    document.getElementById('adminUser').focus();
+    document.getElementById('adminError').style.display = 'none';
+  }
+  function closeAdminLogin() {
+    document.getElementById('adminModal').classList.remove('open');
+  }
+  function doAdminLogin() {
+    const u = document.getElementById('adminUser').value.trim();
+    const p = document.getElementById('adminPass').value;
+    if (u === ADMIN_USER && p === ADMIN_PASS) {
+      closeAdminLogin();
+      document.getElementById('adminDashboard').style.display = 'block';
+      document.getElementById('adminBar').classList.add('visible');
+      document.body.classList.add('admin-mode');
+      // Trigger counters now that dashboard is visible
+      document.querySelectorAll('#adminDashboard .counter').forEach(animateCounter);
+      // Build visit dots
+      const dotsEl2 = document.getElementById('visitDots');
+      if (dotsEl2 && dotsEl2.children.length === 0) {
+        for (let i = 0; i < 40; i++) {
+          const d = document.createElement('div');
+          d.className = 'visit-dot';
+          if (i < 28) d.classList.add('active');
+          dotsEl2.appendChild(d);
+        }
+      }
+      setTimeout(scrollToDash, 150);
+    } else {
+      document.getElementById('adminError').style.display = 'block';
+    }
+  }
+  function doAdminLogout() {
+    document.getElementById('adminDashboard').style.display = 'none';
+    document.getElementById('adminBar').classList.remove('visible');
+    document.body.classList.remove('admin-mode');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function scrollToDash() {
+    const d = document.getElementById('adminDashboard');
+    if (d) d.scrollIntoView({ behavior: 'smooth' });
+  }
+  // Close modal on backdrop click
+  document.getElementById('adminModal').addEventListener('click', function(e) {
+    if (e.target === this) closeAdminLogin();
+  });
 </script>
+
+<!-- ===== ADMIN LOGIN MODAL ===== -->
+<div id="adminModal">
+  <div class="admin-modal-box" style="position:relative;">
+    <button class="admin-modal-close" onclick="closeAdminLogin()"><i class="fas fa-times"></i></button>
+    <div class="admin-modal-logo">Cafe24 CTG</div>
+    <div class="admin-modal-sub">Admin Dashboard Access</div>
+    <div class="admin-field">
+      <label>Username</label>
+      <input type="text" id="adminUser" placeholder="Enter admin username" autocomplete="off">
+    </div>
+    <div class="admin-field">
+      <label>Password</label>
+      <input type="password" id="adminPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doAdminLogin()">
+    </div>
+    <button class="admin-login-btn" onclick="doAdminLogin()"><i class="fas fa-lock"></i> &nbsp;Access Dashboard</button>
+    <div class="admin-error" id="adminError">Incorrect credentials. Please try again.</div>
+  </div>
+</div>
+
+<!-- Admin Top Bar -->
+<div id="adminBar">
+  <span>🔐 Admin Mode Active — <a href="#adminDashboard" onclick="scrollToDash()">View Dashboard</a></span>
+  <button class="admin-bar-logout" onclick="doAdminLogout()">Logout</button>
+</div>
+
 </body>
 </html>
